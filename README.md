@@ -3,6 +3,5 @@ random gifs from gif.tv
 
 just launch gif.sh
 
-Currently no arguments can be passed
-a gif is dislayed via mplayer in fullscreen from 1 ti 10 minutes
+a gif is disPlayed via mplayer in fullscreen every 1 to 10 minutes
 
