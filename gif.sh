@@ -1,8 +1,27 @@
 #! /bin/sh
-tmp_dir="/home/alphatesla/dev/gifs/tmp/"
-max_files=10
-sleep_delay=5
-file_pattern="giftv-*.gif"
+for command in curl mplayer
+do
+  if ! which $command > /dev/null; then
+    read -p "Do you wish to install $command?" yn
+    case $yn in
+      [Yy]* ) sudo apt-get install $command; break;;
+      [Nn]* ) exit;;
+          * ) echo "Please answer yes or no.";;
+    esac
+  fi
+done
+
+current_dir=$(pwd)
+script_dir=$(dirname $0)
+
+if [ $script_dir = '.' ]
+then
+  script_dir="$current_dir"
+fi
+
+tmp_dir="$script_dir/tmp/"
+max_files=50
+file_pattern="*.gif"
 while true; do
     nb_files=`find -type f -path $tmp_dir -name $file_pattern | wc -l`
     if [ $max_files -lt $nb_files ]; then
@@ -18,6 +37,5 @@ while true; do
     gif_real="$gif_file.gif"
     curl -s "http://www.gif.tv/gifs/$gif_real" -o "$tmp_dir$gif_real"
     mplayer -fs "$tmp_dir$gif_real" </dev/null >/dev/null 2>&1
-    #sleep $((RANDOM%600+60))
-    sleep 5
+    sleep $((RANDOM%600+60))
 done
