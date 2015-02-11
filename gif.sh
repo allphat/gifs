@@ -24,9 +24,9 @@ tmp_dir="$script_dir/tmp/"
 max_files=50
 file_pattern="*.gif"
 nb_files_max=50
-nb_files=`ls -l $tmp_dir | wc -l`
-#echo $nb_files
+
 while :; do
+  nb_files=`ls -l $tmp_dir | wc -l`
   if [ $nb_files -lt $max_files ]; then
     search_url='http://api.giphy.com/v1/gifs/random?api_key='$giphy_api_key
     gif_url=$(curl -s $search_url | jshon -e data -e image_original_url -u)
@@ -41,7 +41,7 @@ if [ $max_files -le $nb_files ]; then
   while :
   do
 
-    mplayer -fs "$tmp_dir/"*
+    mplayer -fs -shuffle "$tmp_dir/"*
     #</dev/null >/dev/null 2>&1
   done
 fi
