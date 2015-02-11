@@ -1,5 +1,11 @@
-#! /bin/sh
-for command in curl feh jshon
+#! /bin/bash
+if read -N 1 response; then
+    exit 0
+fi
+
+
+
+for command in curl jshon mplayer
 do
   if ! which $command > /dev/null; then
     read -p "Do you wish to install $command?" yn
@@ -26,6 +32,10 @@ file_pattern="*.gif"
 nb_files_max=50
 
 while :; do
+  #if read response; then
+  #  exit 0
+  #fi
+
   nb_files=`ls -l $tmp_dir | wc -l`
   if [ $nb_files -lt $max_files ]; then
     search_url='http://api.giphy.com/v1/gifs/random?api_key='$giphy_api_key
@@ -40,6 +50,9 @@ done
 if [ $max_files -le $nb_files ]; then
   while :
   do
+    #if read response; then
+    #  exit 0
+    #fi
 
     mplayer -fs -shuffle "$tmp_dir/"*
     #</dev/null >/dev/null 2>&1
