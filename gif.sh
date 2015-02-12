@@ -1,10 +1,4 @@
-#! /bin/bash
-if read -N 1 response; then
-    exit 0
-fi
-
-
-
+#! /bin/sh
 for command in curl jshon mplayer
 do
   if ! which $command > /dev/null; then
@@ -27,41 +21,19 @@ fi
 
 giphy_api_key="dc6zaTOxFJmzC"
 tmp_dir="$script_dir/tmp/"
-max_files=50
-file_pattern="*.gif"
-nb_files_max=50
+file_name="current.gif"
 
 while :; do
-  #if read response; then
-  #  exit 0
-  #fi
+  search_url='http://api.giphy.com/v1/gifs/random?api_key='$giphy_api_key
+  gif_url=$(curl -s $search_url | jshon -e data -e image_original_url -u)
+  gif_real="$tmp_dir$file_name"
+  url=$(curl -s $gif_url -o "$gif_real")
 
-  nb_files=`ls -l $tmp_dir | wc -l`
-  if [ $nb_files -lt $max_files ]; then
-    search_url='http://api.giphy.com/v1/gifs/random?api_key='$giphy_api_key
-    gif_url=$(curl -s $search_url | jshon -e data -e image_original_url -u)
-    gif_real="$tmp_dir$(date +%s).gif"
-    url=$(curl -s $gif_url -o "$gif_real")
-    sleep $((RANDOM%60+10))
-  else
-    break
-  fi
+  mplayer -fs "$tmp_dir/"* </dev/null >/dev/null 2>&1
+
+  sleep $((RANDOM%60+10))
 done
-if [ $max_files -le $nb_files ]; then
-  while :
-  do
-    #if read response; then
-    #  exit 0
-    #fi
-
-    mplayer -fs -shuffle "$tmp_dir/"*
-    #</dev/null >/dev/null 2>&1
-  done
-fi
 
 
-##### delete old nb_files
-#nb_files=`find -type f -path $tmp_dir -name $file_pattern | wc -l`
-#if [ $max_files -lt $nb_files ]; then
-#  find $tmp_dir -type f | sort -n | cut -d' ' -f2- | head -n -2 | xargs rm  
-#fi 
+
+

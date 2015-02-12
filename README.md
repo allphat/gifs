@@ -1,7 +1,8 @@
-# gifs
-random gifs from gif.tv
+Completely useless script unless you want to prank someone
 
-just launch gif.sh
+get a random animated gif from giphy and displays it fullscreen randomly (10 to 60s)
 
-a gif is disPlayed via mplayer in fullscreen every 1 to 10 minutes
+usage : ./gif.sh
+
+./gif.sh &  to work on background and annoy someone :)
 
